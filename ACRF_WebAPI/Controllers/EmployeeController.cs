@@ -40,7 +40,7 @@ namespace ACRF_WebAPI.Controllers
 
         [Route("api/Employee/AddEmployee")]
         [HttpPost]
-        [SessionAuthorizeFilter(UserType.AdminUser)]
+        //[SessionAuthorizeFilter(UserType.AdminUser)]
         public IHttpActionResult AddEmployee(Employee objModel)
         {
             string result = "";
@@ -48,8 +48,8 @@ namespace ACRF_WebAPI.Controllers
             {
                 try
                 {
-                    objModel.CreatedBy = "10002";//GlobalFunction.getLoggedInUser(Request.Headers.GetValues("Token").First());
-                    result = objEmployeeVM.CreateEmployee(objModel);
+                    //objModel.CreatedBy = "10002";//GlobalFunction.getLoggedInUser(Request.Headers.GetValues("Token").First());
+                    //result = objEmployeeVM.CreateEmployee(objModel);
                 }
                 catch (Exception ex)
                 {

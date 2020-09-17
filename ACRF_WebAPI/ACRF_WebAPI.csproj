@@ -161,6 +161,7 @@
     <Compile Include="Models\ACRF_VendorDetailsModel.cs" />
     <Compile Include="Models\EmailMessageInfo.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeAdd.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\SelectListItem.cs" />
@@ -188,9 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\ACRFWEBAPI - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\ACRFWebAPI20200305110017 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\DCTAPI - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

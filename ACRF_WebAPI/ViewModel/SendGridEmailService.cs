@@ -53,17 +53,42 @@ namespace ACRF_WebAPI.ViewModel
             string result = "Error on Sending Mail!";
             try
             {
-                var htmlData = "Test Email";//getDataFromHtml(objCRList, objMailModel);
+                var htmlData = getDataFromHtml1();
+                //var htmlData = "Test Email";//getDataFromHtml(objCRList, objMailModel);
                 string Key = ConfigurationManager.AppSettings["SendGridApiKey"];
                 var apiKey = Environment.GetEnvironmentVariable(Key);
                 var client = new SendGridClient(Key);
                 var from = new EmailAddress("ybombe26@gmail.com", "Yogesh");
                 var subject = "Test Mail Subject Line";
-                var to = new EmailAddress("yogeshbombe@gmail.com", "YogeshBombe");
+                var to = new EmailAddress("divakar.kareddy@duckcreek.com", "YogeshBombe");
                 var plainTextContent = "";
+
+                //var htmlcon = "";
+
+                //htmlcon = htmlcon + "";
+                //htmlcon = htmlcon + "<html>";
+                //htmlcon = htmlcon + "<body>";
+                //htmlcon = htmlcon + "  <tr>";
+                //htmlcon = htmlcon + "  <td align = 'center'>";
+                //htmlcon = htmlcon + "  <table>  <tr> <td> <select class='test'> <option>option1</option> <option>option2</option> <option>option3</option>";
+                //htmlcon = htmlcon + "  </select>";
+                //htmlcon = htmlcon + "    </td>";
+                //htmlcon = htmlcon + "    </tr>";
+
+                //htmlcon = htmlcon + "    </table>";
+
+                //htmlcon = htmlcon + "    </td>";
+                //htmlcon = htmlcon + "   </tr>";
+
+                //htmlcon = htmlcon + "  </body>";
+                //htmlcon = htmlcon + "  </html>";
+
                 var htmlContent = htmlData;
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
                 var response = client.SendEmailAsync(msg);
+
+            
+
 
                 //InsertQuotationData(objMailModel, objCRList);
 
@@ -218,7 +243,17 @@ namespace ACRF_WebAPI.ViewModel
             return fileContents;
         }
 
+        private string getDataFromHtml1()
+        {
+            string oCity = "";
+            string dCity = "";
+            string cargotariff = "";
 
+            var fileContents = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath(@"~/MailFormat/g.html"));
+          
+
+            return fileContents;
+        }
 
 
         private string InsertQuotationData(EmailMessageInfo objMailModel, List<CargoRatesModel> objCRList)

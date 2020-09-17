@@ -43,13 +43,13 @@ namespace ACRF_WebAPI.ViewModel
                     tempobj.ID = Convert.ToInt32(sdr["ID"].ToString());
                     tempobj.EmpID = Convert.ToInt32(sdr["EmpID"].ToString());
                     tempobj.Name = sdr["Name"].ToString();
-                    tempobj.ManagerName = sdr["ManagerName"].ToString();
+                    tempobj.ManagerName = sdr["Name"].ToString();
                     tempobj.Profile = Convert.ToInt32(sdr["ProfileID"].ToString());
                     tempobj.ProjectID = Convert.ToInt32(sdr["ProjectID"].ToString());
 
                     tempobj.ProfilelName = sdr["Profile"].ToString();
                     tempobj.ProjectName = sdr["ProjectName"].ToString();
-                    tempobj.Status = (sdr["Status"]).ToString();
+                    tempobj.Status = Convert.ToInt32(sdr["Status"]);
                     tempobj.StatusName = sdr["StatusName"].ToString();
                     objList.Add(tempobj);
                 }
@@ -213,7 +213,7 @@ namespace ACRF_WebAPI.ViewModel
                     objList.ManagerName = sdr["ManagerName"].ToString();
                     objList.Profile = Convert.ToInt32(sdr["Profile"].ToString());
                     objList.ProjectID = Convert.ToInt32(sdr["ProjectID"]);
-                    objList.Status = sdr["Status"].ToString();
+                    objList.Status = Convert.ToInt32(sdr["Status"]);
                     objList.StatusName = sdr["StatusName"].ToString();
                     objList.Password = (sdr["Password"].ToString());
                     objList.ProfilelName = (sdr["ProfilelName"].ToString());
