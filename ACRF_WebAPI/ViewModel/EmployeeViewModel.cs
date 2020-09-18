@@ -195,7 +195,7 @@ namespace ACRF_WebAPI.ViewModel
             {
                 
                 string sqlstr = "select E.ID as ID,E.EmpID as EmpID, D.EmpName Name, F.EmpName ManagerName, E.Profile as Profile,E.ProjectID as ProjectID, "
-                + " E.Status as Status,S.Status as StatusName,E.Password as Password,P.ProfileName as ProfileName,PR.Project as ProjectName "
+                + " E.Status as Status,S.Status as StatusName,E.Password as Password,P.ProfileName as ProfileName,PR.Project as ProjectName,E.Experties,E.Stream "
                 + " from tbl_Employee E inner "
                 + " join tbl_DCTEmployee D on D.EmpID = E.EmpID "
                 + " inner join tbl_DCTEmployee F on F.EmpID = E.ManagerEmpID "
@@ -222,7 +222,7 @@ namespace ACRF_WebAPI.ViewModel
                     objList.Status = Convert.ToInt32(sdr["Status"]);
                     objList.StatusName = sdr["StatusName"].ToString();
                     objList.Password = (sdr["Password"].ToString());
-                    objList.ProfilelName = (sdr["ProfilelName"].ToString());
+                    objList.ProfilelName = (sdr["ProfileName"].ToString());
                     objList.ProjectName = sdr["ProjectName"].ToString();
                     objList.Expertise = sdr["Experties"].ToString().Split(',').Select(x => int.Parse(x)).ToArray();
                     objList.stream = sdr["Stream"].ToString().Split(',').Select(x => int.Parse(x)).ToArray();
