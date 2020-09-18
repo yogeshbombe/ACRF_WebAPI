@@ -51,6 +51,10 @@ namespace ACRF_WebAPI.ViewModel
                     tempobj.ProjectName = sdr["ProjectName"].ToString();
                     tempobj.Status = Convert.ToInt32(sdr["Status"]);
                     tempobj.StatusName = sdr["StatusName"].ToString();
+                    tempobj.Expertise= sdr["Experties"].ToString().Split(',').Select(x => int.Parse(x)).ToArray();
+                    tempobj.stream = sdr["Stream"].ToString().Split(',').Select(x => int.Parse(x)).ToArray();
+                    tempobj.ExpertiseDisplay = sdr["ExpertiseDisplay"].ToString();
+                    tempobj.streamDisplay = sdr["streamDisplay"].ToString();
                     objList.Add(tempobj);
                 }
                 sdr.Close();
@@ -102,7 +106,7 @@ namespace ACRF_WebAPI.ViewModel
                     {
                         string sqlstr = "";
                         //sqlstr = "insert into tbl_Employee(EmpID,ManagerEmpID,Profile,ProjectID,Password,CreatedBy,CreatedOn) values (@EmpID,@CreatedBy,@CreatedOn)";
-                        sqlstr = "insert into tbl_Employee(EmpID,ManagerEmpID,Profile,ProjectID,Password,Status) values (@EmpID,@ManagerEmpID,@Profile,@ProjectID,@Password,@Status)";
+                        sqlstr = "insert into tbl_Employee(EmpID,ManagerEmpID,Profile,ProjectID,Password,Status,Experties,Stream) values (@EmpID,@ManagerEmpID,@Profile,@ProjectID,@Password,@Status,@Experties,@Stream)";
                         cmd.CommandText = sqlstr;
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@EmpID", objModel.EmpID);
@@ -111,6 +115,8 @@ namespace ACRF_WebAPI.ViewModel
                         cmd.Parameters.AddWithValue("@ProjectID", objModel.ProjectID);
                         cmd.Parameters.AddWithValue("@Password", EnCryptDecrypt.Encryption.encrypt(objModel.Password.Trim()));
                         cmd.Parameters.AddWithValue("@Status", objModel.Status);
+                        cmd.Parameters.AddWithValue("@Experties", string.Join(",", objModel.Expertise));
+                        cmd.Parameters.AddWithValue("@Stream", string.Join(",", objModel.stream));
                         //cmd.Parameters.AddWithValue("@CreatedBy", objModel.CreatedBy);
                         //cmd.Parameters.AddWithValue("@CreatedOn", StandardDateTime.GetDateTime());
                         cmd.ExecuteNonQuery();
@@ -218,6 +224,8 @@ namespace ACRF_WebAPI.ViewModel
                     objList.Password = (sdr["Password"].ToString());
                     objList.ProfilelName = (sdr["ProfilelName"].ToString());
                     objList.ProjectName = sdr["ProjectName"].ToString();
+                    objList.Expertise = sdr["Experties"].ToString().Split(',').Select(x => int.Parse(x)).ToArray();
+                    objList.stream = sdr["Stream"].ToString().Split(',').Select(x => int.Parse(x)).ToArray();
                 }
                 sdr.Close();
 

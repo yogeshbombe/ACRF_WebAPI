@@ -50,6 +50,10 @@ namespace ACRF_WebAPI.Models
 
         public int[] stream { get; set; }
 
+        public string ExpertiseDisplay { get; set; }
+
+        public string streamDisplay { get; set; }
+
 
     }
 
