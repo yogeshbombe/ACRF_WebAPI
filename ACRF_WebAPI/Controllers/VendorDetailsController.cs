@@ -161,7 +161,6 @@ namespace ACRF_WebAPI.Controllers
 
 
         #region api/VendorDetails/ViewVendorDetailsByPage (Get)
-
         [Route("api/VendorDetails/ViewVendorDetailsByPage")]
         [HttpGet]
         [SessionAuthorizeFilter(UserType.AdminUser)]

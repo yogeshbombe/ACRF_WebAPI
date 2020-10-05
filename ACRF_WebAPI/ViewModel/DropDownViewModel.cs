@@ -125,7 +125,7 @@ namespace ACRF_WebAPI.ViewModel
             List<SelectListItem> objList = new List<SelectListItem>();
             try
             {
-                string sqlstr = "select EmpID,EmpName as Name from [tbl_DCTEmployee] order by ID";
+                string sqlstr = "select EmpID,EmpName as Name from [tbl_DCTEmployee] order by EmpID";
 
                 var connection = gConnection.Connection();
                 connection.Open();

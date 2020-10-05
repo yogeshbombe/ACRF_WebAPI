@@ -165,7 +165,7 @@ namespace ACRF_WebAPI.ViewModel
                 cmd.Parameters.AddWithValue("@EmpID", objModel.EmpID);
                 SqlDataReader sdr = cmd.ExecuteReader();
 
-                if (objModel.EmpID ==0)
+                if (objModel.EmpID > 0)
                 {
                     while (sdr.Read())
                     {
