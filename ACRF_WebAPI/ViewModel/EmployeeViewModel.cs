@@ -268,7 +268,7 @@ namespace ACRF_WebAPI.ViewModel
                         cmd.Parameters.AddWithValue("@Id", objModel.ID);
                         cmd.Parameters.AddWithValue("@EmpID", objModel.EmpID);
                         //cmd.Parameters.AddWithValue("@ManagerName", objModel.ManagerName);
-                        cmd.Parameters.AddWithValue("@ManagerName", "10002");
+                        cmd.Parameters.AddWithValue("@ManagerName", "10012");
                         cmd.Parameters.AddWithValue("@Profile", objModel.Profile);
                         cmd.Parameters.AddWithValue("@ProjectID", objModel.ProjectID);
                         cmd.Parameters.AddWithValue("@Password", objModel.Password);
