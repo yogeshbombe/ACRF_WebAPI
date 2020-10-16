@@ -233,11 +233,11 @@ namespace ACRF_WebAPI.ViewModel
 
             var vendordata = objVendorVM.GetOneVendorDetails(objMailModel.VendorId);
 
-            fileContents = fileContents.Replace("{{VendorAddress}}", vendordata.Address);
+            //fileContents = fileContents.Replace("{{VendorAddress}}", vendordata.Address);
             //fileContents = fileContents.Replace("{{VendorMobile}}", vendordata.Mobile);
             //fileContents = fileContents.Replace("{{VendorEmail}}", vendordata.Email);
             
-            fileContents = fileContents.Replace("{{VendorName}}", vendordata.VendorName);
+            //fileContents = fileContents.Replace("{{VendorName}}", vendordata.VendorName);
 
 
             return fileContents;

@@ -20,7 +20,11 @@ namespace ACRF_WebAPI.Models
         [MaxLength(50)]
         public string Name { get; set; }
 
-      //  [Required(ErrorMessage = "Manager Name can't be blank!")]
+        public string Email { get; set; }
+
+        public int ManagerEmpID { get; set; }
+
+        //  [Required(ErrorMessage = "Manager Name can't be blank!")]
         [MaxLength(50)]
         public string ManagerName { get; set; }
 

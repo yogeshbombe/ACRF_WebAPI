@@ -374,5 +374,26 @@ namespace ACRF_WebAPI.Controllers
 
 
 
+        #region api/DropDown/ViewManagerList (Get)
+
+        [Route("api/DropDown/ViewManagerList")]
+        [HttpGet]
+        [SessionAuthorizeFilter]
+        public IHttpActionResult ViewManagerList()
+        {
+            List<SelectListItem> objList = new List<SelectListItem>();
+            try
+            {
+                objList = objDDVM.ListManager();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlerClass.LogError(ex);
+            }
+
+            return Ok(new { results = objList });
+        }
+
+        #endregion
     }
 }
