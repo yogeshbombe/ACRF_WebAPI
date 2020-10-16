@@ -14,7 +14,7 @@ namespace ACRF_WebAPI.ViewModel
 
         public string CreateVendorDetails(ACRF_VendorDetailsModel objModel)
         {
-            string result = "Error on Saving Vendor Details!";
+            string result = "Error on Saving Project Details!";
             try
             {
                 objModel = NullToBlank(objModel);
@@ -35,32 +35,31 @@ namespace ACRF_WebAPI.ViewModel
                         try
                         {
                             string sqlstr = "";
-                            sqlstr = "insert into ACRF_VendorDetails(VendorName,Address,ContactName,Mobile,Email,FAX,SkypeId,Website,MiscInfo "
-                             + " ,Password,CountryId,PostalCode,CreatedBy,CreatedOn) "
-                             + " values (@VendorName,@Address,@ContactName,@Mobile,@Email,@FAX,@SkypeId,@Website,@MiscInfo "
-                             + " ,@Password,@CountryId,@PostalCode,@CreatedBy,@CreatedOn)";
+                            sqlstr = "insert into ProjectDetails(ProjectName,ManagerName,Mobile,Email,SkypeId"
+                             + " ,Password,CreatedBy,CreatedOn,SprintStartDate,SprintEndDate,CurrentSprintName,Devhours,Testhours) "
+                             + " values (@ProjectName,@ManagerName,@Mobile,@Email,@SkypeId"
+                             + " ,@Password,@CreatedBy,@CreatedOn,@SprintStartDate,@SprintEndDate,@CurrentSprintName,@Devhours,@Testhours)";
                             cmd.CommandText = sqlstr;
                             cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("@VendorName", objModel.VendorName);
-                            cmd.Parameters.AddWithValue("@Address", objModel.Address);
-                            cmd.Parameters.AddWithValue("@ContactName", objModel.ContactName);
+                            cmd.Parameters.AddWithValue("@ProjectName", objModel.ProjectName);
+                            cmd.Parameters.AddWithValue("@ManagerName", objModel.ManagerName);
                             cmd.Parameters.AddWithValue("@Mobile", objModel.Mobile);
                             cmd.Parameters.AddWithValue("@Email", objModel.Email);
-                            cmd.Parameters.AddWithValue("@FAX", objModel.FAX);
                             cmd.Parameters.AddWithValue("@SkypeId", objModel.SkypeId);
-                            cmd.Parameters.AddWithValue("@Website", objModel.Website);
-                            cmd.Parameters.AddWithValue("@MiscInfo", objModel.MiscInfo);
                             cmd.Parameters.AddWithValue("@Password", objModel.Password);
-                            cmd.Parameters.AddWithValue("@CountryId", objModel.CountryId);
-                            cmd.Parameters.AddWithValue("@PostalCode", objModel.PostalCode);
                             cmd.Parameters.AddWithValue("@CreatedBy", objModel.CreatedBy);
                             cmd.Parameters.AddWithValue("@CreatedOn", StandardDateTime.GetDateTime());
+                            cmd.Parameters.AddWithValue("@SprintStartDate", objModel.SprintStartDate);
+                            cmd.Parameters.AddWithValue("@SprintEndDate", objModel.SprintEndDate);
+                            cmd.Parameters.AddWithValue("@CurrentSprintName", objModel.CurrentSprintName);
+                            cmd.Parameters.AddWithValue("@Devhours", objModel.Devhours);
+                            cmd.Parameters.AddWithValue("@Testhours", objModel.Testhours);
                             cmd.ExecuteNonQuery();
 
 
                             transaction.Commit();
                             connection.Close();
-                            result = "Vendor Details Added Successfully!";
+                            result = "Project Added Successfully!";
                         }
                         catch (Exception ex)
                         {
@@ -99,10 +98,13 @@ namespace ACRF_WebAPI.ViewModel
             List<ACRF_VendorDetailsModel> objList = new List<ACRF_VendorDetailsModel>();
             try
             {
-                string sqlstr = "select Id,VendorName, isnull(Address,'') as Address, isnull(Mobile,'') as Mobile,"
-                + " isnull(Email,'') as Email, isnull(Password,'') as Password, isnull(CountryId,0) as CountryId, "
-                + " isnull(LastLogin,'') as LastLogin, isnull(CreatedBy,'') as CreatedBy, isnull(CreatedOn,'')  "
-                + " as CreatedOn, isnull(ContactName,'') as ContactName From ACRF_VendorDetails order by Id";
+                string sqlstr = "select Id,isnull(ProjectName,'''') as ProjectName, isnull(ManagerName,'''') as ManagerName,"
+                +"isnull(Mobile,'''') as Mobile, isnull(Email,'''') as Email,isnull(SkypeId,'''') as SkypeId,isnull(LastLogin,'''') as LastLogin,  "
+                +"isnull(CreatedBy,'''') as CreatedBy,isnull(createdon,'''') as CreatedOn," +
+                " isnull(updatedby,'''') as updatedby, isnull(updatedon,'''') as updatedon,"
+                +"SprintStartDate,SprintEndDate,isnull(CurrentSprintName,'''') as CurrentSprintName," +
+                "isnull(Devhours,0) as Devhours," +
+                "isnull(Testhours,0) as Testhours From ProjectDetails order by Id";
 
                 var connection = gConnection.Connection();
                 connection.Open();
@@ -114,16 +116,21 @@ namespace ACRF_WebAPI.ViewModel
                 {
                     ACRF_VendorDetailsModel tempobj = new ACRF_VendorDetailsModel();
                     tempobj.Id = Convert.ToInt32(sdr["Id"].ToString());
-                    tempobj.VendorName = sdr["VendorName"].ToString();
-                    tempobj.Address = sdr["Address"].ToString();
+                    tempobj.ProjectName = sdr["ProjectName"].ToString();
                     tempobj.Mobile = sdr["Mobile"].ToString();
                     tempobj.Email = sdr["Email"].ToString();
                     tempobj.Password = sdr["Password"].ToString();
-                    tempobj.CountryId = Convert.ToInt32(sdr["CountryId"].ToString());
                     tempobj.LastLogin = Convert.ToDateTime(sdr["LastLogin"].ToString());
                     tempobj.CreatedBy = sdr["CreatedBy"].ToString();
                     tempobj.CreatedOn = Convert.ToDateTime(sdr["CreatedOn"].ToString());
-                    tempobj.ContactName = sdr["ContactName"].ToString();
+                    tempobj.ManagerName = sdr["ManagerName"].ToString();
+                    //tempobj.SprintStartDate = Convert.ToDateTime(sdr["SprintStartDate"].ToString());
+                    tempobj.SprintStartDate = sdr["SprintStartDate"].ToString();
+                    //tempobj.SprintEndDate = Convert.ToDateTime(sdr["SprintEndDate"].ToString());
+                    tempobj.SprintEndDate = sdr["SprintEndDate"].ToString();
+                    tempobj.CurrentSprintName = sdr["CurrentSprintName"].ToString();
+                    tempobj.Devhours = Convert.ToInt32(sdr["Devhours"].ToString());
+                    tempobj.Testhours = Convert.ToInt32(sdr["Testhours"].ToString());
                     tempobj.Password = EnCryptDecrypt.Encryption.decrypt(tempobj.Password);
                     objList.Add(tempobj);
                 }
@@ -147,7 +154,7 @@ namespace ACRF_WebAPI.ViewModel
 
         public string UpdateVendorDetails(ACRF_VendorDetailsModel objModel)
         {
-            string result = "Error on Updating Vendor Details!";
+            string result = "Error on Updating Project Details!";
             try
             {
                 objModel = NullToBlank(objModel);
@@ -165,33 +172,33 @@ namespace ACRF_WebAPI.ViewModel
                     try
                     {
                         string sqlstr = "";
-                        sqlstr = "update ACRF_VendorDetails set VendorName=@VendorName,Address=@Address,ContactName=@ContactName,"
-                         + " Mobile=@Mobile,Email=@Email,FAX=@FAX,SkypeId=@SkypeId,Website=@Website,MiscInfo=@MiscInfo "
-                         + " ,Password=@Password,CountryId=@CountryId,PostalCode=@PostalCode,UpdatedBy=@UpdatedBy,UpdatedOn=@UpdatedOn "
+                        sqlstr = "update ProjectDetails set ProjectName=@ProjectName,ManagerName=@ManagerName,"
+                         + " Mobile=@Mobile,Email=@Email,SkypeId=@SkypeId"
+                         + " ,Password=@Password,UpdatedBy=@UpdatedBy,UpdatedOn=@UpdatedOn,SprintStartDate=@SprintStartDate"
+                         + " ,SprintEndDate=@SprintEndDate, CurrentSprintName=@CurrentSprintName,Devhours=@Devhours,Testhours=@Testhours"
                          + " where Id=@Id ";
                         cmd.CommandText = sqlstr;
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@Id", objModel.Id);
-                        cmd.Parameters.AddWithValue("@VendorName", objModel.VendorName);
-                        cmd.Parameters.AddWithValue("@Address", objModel.Address);
-                        cmd.Parameters.AddWithValue("@ContactName", objModel.ContactName);
+                        cmd.Parameters.AddWithValue("@ProjectName", objModel.ProjectName);
+                        cmd.Parameters.AddWithValue("@ManagerName", objModel.ManagerName);
                         cmd.Parameters.AddWithValue("@Mobile", objModel.Mobile);
                         cmd.Parameters.AddWithValue("@Email", objModel.Email);
-                        cmd.Parameters.AddWithValue("@FAX", objModel.FAX);
                         cmd.Parameters.AddWithValue("@SkypeId", objModel.SkypeId);
-                        cmd.Parameters.AddWithValue("@Website", objModel.Website);
-                        cmd.Parameters.AddWithValue("@MiscInfo", objModel.MiscInfo);
                         cmd.Parameters.AddWithValue("@Password", objModel.Password);
-                        cmd.Parameters.AddWithValue("@CountryId", objModel.CountryId);
-                        cmd.Parameters.AddWithValue("@PostalCode", objModel.PostalCode);
                         cmd.Parameters.AddWithValue("@UpdatedBy", objModel.UpdatedBy);
                         cmd.Parameters.AddWithValue("@UpdatedOn", StandardDateTime.GetDateTime());
+                        cmd.Parameters.AddWithValue("@SprintStartDate", objModel.SprintStartDate);
+                        cmd.Parameters.AddWithValue("@SprintEndDate", objModel.SprintEndDate);
+                        cmd.Parameters.AddWithValue("@CurrentSprintName", objModel.CurrentSprintName);
+                        cmd.Parameters.AddWithValue("@Devhours", objModel.Devhours);
+                        cmd.Parameters.AddWithValue("@Testhours", objModel.Testhours);
                         cmd.ExecuteNonQuery();
 
 
                         transaction.Commit();
                         connection.Close();
-                        result = "Vendor Details Updated Successfully!";
+                        result = "Project Details Updated Successfully!";
                     }
                     catch (Exception ex)
                     {
@@ -222,7 +229,7 @@ namespace ACRF_WebAPI.ViewModel
 
         public string DeleteVendorDetails(int id, string created_by)
         {
-            string result = "Error on Deleting Vendor Details!";
+            string result = "Error on Deleting Project Details!";
             try
             {
                 var connection = gConnection.Connection();
@@ -235,10 +242,10 @@ namespace ACRF_WebAPI.ViewModel
                 try
                 {
                     string sqlstr = "";
-                    sqlstr = "insert into ACRF_VendorDetails_Log(Id, VendorName,Address,ContactName,Mobile,Email,FAX,SkypeId,Website,MiscInfo "
-                         + " ,Password,CountryId,PostalCode,CreatedBy,CreatedOn) "
-                     + " select Id, VendorName,Address,ContactName,Mobile,Email,FAX,SkypeId,Website,MiscInfo "
-                         + " ,Password,CountryId,PostalCode,@CreatedBy,@CreatedOn from ACRF_VendorDetails where Id=@Id";
+                    sqlstr = "insert into ProjectDetails_Log(ProjectName,ManagerName,Mobile,Email,SkypeId"
+                         + " ,Password,CreatedBy,CreatedOn,SprintStartDate,SprintEndDate,CurrentSprintName,Devhours,Testhours) "
+                     + " select ProjectName,ManagerName,Mobile,Email,SkypeId"
+                         + " ,Password,CreatedBy,CreatedOn,SprintStartDate,SprintEndDate,CurrentSprintName,Devhours,Testhours from ProjectDetails where Id=@Id";
                     cmd.CommandText = sqlstr;
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@Id", id);
@@ -247,7 +254,7 @@ namespace ACRF_WebAPI.ViewModel
                     cmd.ExecuteNonQuery();
 
 
-                    sqlstr = "delete from ACRF_VendorDetails where Id=@Id";
+                    sqlstr = "delete from ProjectDetails where Id=@Id";
                     cmd.CommandText = sqlstr;
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@Id", id);
@@ -256,7 +263,7 @@ namespace ACRF_WebAPI.ViewModel
                     
                     transaction.Commit();
                     connection.Close();
-                    result = "Vendor Details Deleted Successfully!";
+                    result = "Project Deleted Successfully!";
                 }
                 catch (Exception ex)
                 {
@@ -285,11 +292,11 @@ namespace ACRF_WebAPI.ViewModel
             ACRF_VendorDetailsModel objList = new ACRF_VendorDetailsModel();
             try
             {
-                string sqlstr = "select Id,VendorName, isnull(Address,'') as Address, isnull(ContactName,'') as ContactName, "
-                + " isnull(Mobile,'') as Mobile, isnull(FAX,'') as FAX, isnull(SkypeId,'') as SkypeId, isnull(Website,'') as Website,"
-                + " isnull(Email,'') as Email, isnull(Password,'') as Password, isnull(CountryId,0) as CountryId, isnull(MiscInfo,'') as MiscInfo,"
+                string sqlstr = "select Id,ProjectName,isnull(ManagerName,'') as ManagerName, "
+                + " isnull(Mobile,'') as Mobile,isnull(SkypeId,'') as SkypeId,"
+                + " isnull(Email,'') as Email, isnull(Password,'') as Password,"
                 + " isnull(LastLogin,'') as LastLogin, isnull(CreatedBy,'') as CreatedBy, isnull(CreatedOn,'')  "
-                + " as CreatedOn, isnull(PostalCode,'') as PostalCode, isnull(profilepicture,'') as profilepicture From ACRF_VendorDetails where Id=@Id";
+                + " as CreatedOn,SprintStartDate,SprintEndDate,isnull(CurrentSprintName,'''') as CurrentSprintName,isnull(Devhours,0) as Devhours,isnull(Testhours,0) as Testhours,isnull(profilepicture,'') as profilepicture From ProjectDetails where Id=@Id";
                 var connection = gConnection.Connection();
                 connection.Open();
                 SqlCommand cmd = new SqlCommand(sqlstr, connection);
@@ -300,21 +307,28 @@ namespace ACRF_WebAPI.ViewModel
                 while (sdr.Read())
                 {
                     objList.Id = Convert.ToInt32(sdr["Id"].ToString());
-                    objList.VendorName = sdr["VendorName"].ToString();
-                    objList.Address = sdr["Address"].ToString();
-                    objList.ContactName = sdr["ContactName"].ToString();
+                    objList.ProjectName = sdr["ProjectName"].ToString();
+                    //objList.Address = sdr["Address"].ToString();
+                    objList.ManagerName = sdr["ManagerName"].ToString();
                     objList.Mobile = sdr["Mobile"].ToString();
                     objList.Email = sdr["Email"].ToString();
                     objList.Password = sdr["Password"].ToString();
-                    objList.CountryId = Convert.ToInt32(sdr["CountryId"].ToString());
+                    //objList.CountryId = Convert.ToInt32(sdr["CountryId"].ToString());
                     objList.LastLogin = Convert.ToDateTime(sdr["LastLogin"].ToString());
                     objList.CreatedBy = sdr["CreatedBy"].ToString();
                     objList.CreatedOn = Convert.ToDateTime(sdr["CreatedOn"].ToString());
-                    objList.PostalCode = sdr["PostalCode"].ToString();
-                    objList.FAX = sdr["FAX"].ToString();
+                    //objList.PostalCode = sdr["PostalCode"].ToString();
+                    //objList.FAX = sdr["FAX"].ToString();
                     objList.SkypeId = sdr["SkypeId"].ToString();
-                    objList.Website = sdr["Website"].ToString();
-                    objList.MiscInfo = sdr["MiscInfo"].ToString();
+                    //objList.Website = sdr["Website"].ToString();
+                    // objList.MiscInfo = sdr["MiscInfo"].ToString();
+                    //objList.SprintStartDate = Convert.ToDateTime(sdr["SprintStartDate"].ToString());
+                    //objList.SprintEndDate = Convert.ToDateTime(sdr["SprintEndDate"].ToString());
+                    objList.SprintStartDate = sdr["SprintStartDate"].ToString();
+                    objList.SprintEndDate = sdr["SprintEndDate"].ToString();
+                    objList.CurrentSprintName = sdr["CurrentSprintName"].ToString();
+                    objList.Devhours = Convert.ToInt32(sdr["Devhours"].ToString());
+                    objList.Testhours = Convert.ToInt32(sdr["Testhours"].ToString());
                     objList.Password = EnCryptDecrypt.Encryption.decrypt(objList.Password);
                     if(sdr["profilepicture"].ToString() == "")
                     {
@@ -348,7 +362,7 @@ namespace ACRF_WebAPI.ViewModel
             try
             {
 
-                string sqlstr = "Select * from ACRF_VendorDetails Where ISNULL(Mobile,'')=@Mobile and Isnull(Id,0)!=@Id ";
+                string sqlstr = "Select * from ProjectDetails Where ISNULL(Mobile,'')=@Mobile and Isnull(Id,0)!=@Id ";
 
                 var connection = gConnection.Connection();
                 connection.Open();
@@ -370,7 +384,7 @@ namespace ACRF_WebAPI.ViewModel
 
 
 
-                sqlstr = "Select * from ACRF_VendorDetails Where Isnull(Id,0)!=@Id "
+                sqlstr = "Select * from ProjectDetails Where Isnull(Id,0)!=@Id "
                  + " and Email=@Email ";
                 cmd.Parameters.Clear();
                 cmd.Connection = connection;
@@ -404,26 +418,26 @@ namespace ACRF_WebAPI.ViewModel
 
         private ACRF_VendorDetailsModel NullToBlank(ACRF_VendorDetailsModel objModel)
         {
-            if(objModel.Address==null)
+            //if(objModel.Address==null)
+            //{
+            //    objModel.Address = "";
+            //}
+            if(objModel.ManagerName == null)
             {
-                objModel.Address = "";
-            }
-            if(objModel.ContactName == null)
-            {
-                objModel.ContactName = "";
+                objModel.ManagerName = "";
             }
             if(objModel.Email == null)
             {
                 objModel.Email = "";
             }
-            if(objModel.FAX == null)
-            {
-                objModel.FAX = "";
-            }
-            if(objModel.MiscInfo == null)
-            {
-                objModel.MiscInfo = "";
-            }
+            //if(objModel.FAX == null)
+            //{
+            //    objModel.FAX = "";
+            //}
+            //if(objModel.MiscInfo == null)
+            //{
+            //    objModel.MiscInfo = "";
+            //}
             if(objModel.Mobile==null)
             {
                 objModel.Mobile = "";
@@ -432,22 +446,22 @@ namespace ACRF_WebAPI.ViewModel
             {
                 objModel.Password = "";
             }
-            if(objModel.PostalCode==null)
-            {
-                objModel.PostalCode = "";
-            }
+            //if(objModel.PostalCode==null)
+            //{
+            //    objModel.PostalCode = "";
+            //}
             if(objModel.SkypeId==null)
             {
                 objModel.SkypeId = "";
             }
-            if(objModel.VendorName==null)
+            if(objModel.ProjectName==null)
             {
-                objModel.VendorName = "";
+                objModel.ProjectName = "";
             }
-            if(objModel.Website==null)
-            {
-                objModel.Website = "";
-            }
+            //if(objModel.Website==null)
+            //{
+            //    objModel.Website = "";
+            //}
 
             return objModel;
         }
@@ -470,7 +484,7 @@ namespace ACRF_WebAPI.ViewModel
                 }
                 int startIndex = max * (page - 1);
 
-                string sqlstr = "ACRF_GetVendorDetailsByPage";
+                string sqlstr = "[ACRF_GetProjectDetailsByPage]";
 
                 var connection = gConnection.Connection();
                 connection.Open();
@@ -487,28 +501,36 @@ namespace ACRF_WebAPI.ViewModel
                 {
                     ACRF_VendorDetailsModel tempobj = new ACRF_VendorDetailsModel();
                     tempobj.Id = Convert.ToInt32(sdr["Id"].ToString());
-                    tempobj.VendorName = sdr["VendorName"].ToString();
-                    tempobj.Address = sdr["Address"].ToString();
-                    tempobj.ContactName = sdr["ContactName"].ToString();
+                    tempobj.ProjectName = sdr["ProjectName"].ToString();
+                    //tempobj.Address = sdr["Address"].ToString();
+                    tempobj.ManagerName = sdr["ManagerName"].ToString();
                     tempobj.Mobile = sdr["Mobile"].ToString();
                     tempobj.Email = sdr["Email"].ToString();
-                    tempobj.FAX = sdr["FAX"].ToString();
+                   // tempobj.FAX = sdr["FAX"].ToString();
                     tempobj.SkypeId = sdr["SkypeId"].ToString();
-                    tempobj.Website = sdr["Website"].ToString();
-                    tempobj.MiscInfo = sdr["MiscInfo"].ToString();
-                    tempobj.CountryId = Convert.ToInt32(sdr["CountryId"].ToString());
-                    tempobj.PostalCode = sdr["PostalCode"].ToString();
+                    //tempobj.Website = sdr["Website"].ToString();
+                    //tempobj.MiscInfo = sdr["MiscInfo"].ToString();
+                    //tempobj.CountryId = Convert.ToInt32(sdr["CountryId"].ToString());
+                    //tempobj.PostalCode = sdr["PostalCode"].ToString();
                     tempobj.LastLogin = Convert.ToDateTime(sdr["LastLogin"].ToString());
 
                     tempobj.CreatedBy = sdr["CreatedBy"].ToString();
                     tempobj.CreatedOn = Convert.ToDateTime(sdr["CreatedOn"].ToString());
+                    var usCulture = new System.Globalization.CultureInfo("en-US");
+                   // tempobj.SprintStartDate= Convert.ToDateTime(sdr["SprintStartDate"].ToString()).ToShortDateString();
+                    //tempobj.SprintEndDate = Convert.ToDateTime(sdr["SprintEndDate"].ToString());
+                    tempobj.SprintStartDate = sdr["SprintStartDate"].ToString();
+                    tempobj.SprintEndDate = sdr["SprintEndDate"].ToString();
+                    tempobj.CurrentSprintName = sdr["CurrentSprintName"].ToString();
+                    tempobj.Devhours = Convert.ToInt32(sdr["Devhours"].ToString());
+                    tempobj.Testhours = Convert.ToInt32(sdr["Testhours"].ToString());
                     objList.Add(tempobj);
                 }
                 sdr.Close();
                 objPaged.ACRF_VendorDetailsModelList = objList;
 
 
-                sqlstr = "select count(*) as cnt from ACRF_VendorDetails where VendorName like @search ";
+                sqlstr = "select count(*) as cnt from ProjectDetails where ProjectName like @search ";
                 cmd.Parameters.Clear();
                 cmd.CommandText = sqlstr;
                 cmd.Connection = connection;

@@ -42,8 +42,9 @@ namespace ACRF_WebAPI.ViewModel
                     Employee tempobj = new Employee();
                     tempobj.ID = Convert.ToInt32(sdr["ID"].ToString());
                     tempobj.EmpID = Convert.ToInt32(sdr["EmpID"].ToString());
+                    tempobj.Email = sdr["Email"].ToString();
                     tempobj.Name = sdr["Name"].ToString();
-                    tempobj.ManagerName = sdr["Name"].ToString();
+                    tempobj.ManagerName = sdr["ManagerName"].ToString();
                     tempobj.Profile = Convert.ToInt32(sdr["ProfileID"].ToString());
                     tempobj.ProjectID = Convert.ToInt32(sdr["ProjectID"].ToString());
 
@@ -61,7 +62,7 @@ namespace ACRF_WebAPI.ViewModel
                 objPaged.EmployeeModelList = objList;
 
 
-                sqlstr = "select count(*) as cnt from tbl_Employee where [Name] like @search ";
+                sqlstr = "select count(*) as cnt from tbl_Employee inner join tbl_DCTEmployee on tbl_Employee.EmpID=tbl_DCTEmployee.EmpID where tbl_DCTEmployee.EmpName like @search ";
                 cmd.Parameters.Clear();
                 cmd.CommandText = sqlstr;
                 cmd.Connection = connection;
@@ -106,11 +107,12 @@ namespace ACRF_WebAPI.ViewModel
                     {
                         string sqlstr = "";
                         //sqlstr = "insert into tbl_Employee(EmpID,ManagerEmpID,Profile,ProjectID,Password,CreatedBy,CreatedOn) values (@EmpID,@CreatedBy,@CreatedOn)";
-                        sqlstr = "insert into tbl_Employee(EmpID,ManagerEmpID,Profile,ProjectID,Password,Status,Experties,Stream) values (@EmpID,@ManagerEmpID,@Profile,@ProjectID,@Password,@Status,@Experties,@Stream)";
+                        sqlstr = "insert into tbl_Employee(EmpID,Email,ManagerEmpID,Profile,ProjectID,Password,Status,Experties,Stream) values (@EmpID,@Email,@ManagerEmpID,@Profile,@ProjectID,@Password,@Status,@Experties,@Stream)";
                         cmd.CommandText = sqlstr;
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@EmpID", objModel.EmpID);
-                        cmd.Parameters.AddWithValue("@ManagerEmpID", objModel.CreatedBy);
+                        cmd.Parameters.AddWithValue("@Email", objModel.Email);
+                        cmd.Parameters.AddWithValue("@ManagerEmpID", objModel.ManagerEmpID);
                         cmd.Parameters.AddWithValue("@Profile", objModel.Profile);
                         cmd.Parameters.AddWithValue("@ProjectID", objModel.ProjectID);
                         cmd.Parameters.AddWithValue("@Password", EnCryptDecrypt.Encryption.encrypt(objModel.Password.Trim()));
@@ -194,7 +196,7 @@ namespace ACRF_WebAPI.ViewModel
             try
             {
                 
-                string sqlstr = "select E.ID as ID,E.EmpID as EmpID, D.EmpName Name, F.EmpName ManagerName, E.Profile as Profile,E.ProjectID as ProjectID, "
+                string sqlstr = "select E.ID as ID,E.EmpID as EmpID,E.Email as Email, D.EmpName Name, E.ManagerEmpID ManagerEmpID, E.Profile as Profile,E.ProjectID as ProjectID, "
                 + " E.Status as Status,S.Status as StatusName,E.Password as Password,P.ProfileName as ProfileName,PR.Project as ProjectName,E.Experties,E.Stream "
                 + " from tbl_Employee E inner "
                 + " join tbl_DCTEmployee D on D.EmpID = E.EmpID "
@@ -215,8 +217,10 @@ namespace ACRF_WebAPI.ViewModel
                 {
                     objList.ID = Convert.ToInt32(sdr["ID"]);
                     objList.EmpID = Convert.ToInt32(sdr["EmpID"].ToString());
-                    objList.Name = sdr["Name"].ToString();
-                    objList.ManagerName = sdr["ManagerName"].ToString();
+                    objList.Email = sdr["Email"].ToString();
+                   // objList.Name = sdr["Name"].ToString();
+                    objList.ManagerEmpID = Convert.ToInt32(sdr["ManagerEmpID"]);
+                    //objList.ManagerName = sdr["ManagerName"].ToString();
                     objList.Profile = Convert.ToInt32(sdr["Profile"].ToString());
                     objList.ProjectID = Convert.ToInt32(sdr["ProjectID"]);
                     objList.Status = Convert.ToInt32(sdr["Status"]);
@@ -244,7 +248,7 @@ namespace ACRF_WebAPI.ViewModel
 
         public string UpdateEmployee(Employee objModel)
         {
-            string result = "Error on Updating Vendor Details!";
+            string result = "Error on Updating Employee Details!";
             try
             {
                 //objModel = NullToBlank(objModel);
@@ -262,17 +266,20 @@ namespace ACRF_WebAPI.ViewModel
                     try
                     {
                         string sqlstr = "";
-                        sqlstr = "update tbl_Employee set EmpID=@EmpID,ManagerEmpID=@ManagerName,Profile=@Profile,ProjectID=@ProjectID,Password=@Password,Status=@Status where ID=@Id";
+                        sqlstr = "update tbl_Employee set EmpID=@EmpID,ManagerEmpID=@ManagerEmpID,Profile=@Profile,ProjectID=@ProjectID,Password=@Password,Status=@Status,Email=@Email,Experties=@Experties,Stream=@Stream where ID=@Id";
                         cmd.CommandText = sqlstr;
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@Id", objModel.ID);
                         cmd.Parameters.AddWithValue("@EmpID", objModel.EmpID);
+                        cmd.Parameters.AddWithValue("@Email", objModel.Email);
                         //cmd.Parameters.AddWithValue("@ManagerName", objModel.ManagerName);
-                        cmd.Parameters.AddWithValue("@ManagerName", "10012");
+                        cmd.Parameters.AddWithValue("@ManagerEmpID", objModel.ManagerEmpID);
                         cmd.Parameters.AddWithValue("@Profile", objModel.Profile);
                         cmd.Parameters.AddWithValue("@ProjectID", objModel.ProjectID);
                         cmd.Parameters.AddWithValue("@Password", objModel.Password);
                         cmd.Parameters.AddWithValue("@Status", Convert.ToInt32(objModel.Status));
+                        cmd.Parameters.AddWithValue("@Experties", string.Join(",", objModel.Expertise));
+                        cmd.Parameters.AddWithValue("@Stream", string.Join(",", objModel.stream));
                         cmd.ExecuteNonQuery();
 
 

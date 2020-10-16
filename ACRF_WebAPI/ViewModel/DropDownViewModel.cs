@@ -432,7 +432,41 @@ namespace ACRF_WebAPI.ViewModel
         #endregion
 
 
+        #region List Manager
 
+        public List<SelectListItem> ListManager()
+        {
+            List<SelectListItem> objList = new List<SelectListItem>();
+            try
+            {
+                string sqlstr = "select EmpID,ManagerName as Name from ProjectDetails pd inner join tbl_DCTEmployee de on pd.ManagerName=de.EmpName order by de.EmpID";
+
+                var connection = gConnection.Connection();
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(sqlstr, connection);
+                cmd.CommandType = System.Data.CommandType.Text;
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                while (sdr.Read())
+                {
+                    SelectListItem tempobj = new SelectListItem();
+                    tempobj.Text = sdr["Name"].ToString();
+                    tempobj.Value = sdr["EmpID"].ToString();
+                    objList.Add(tempobj);
+                }
+                sdr.Close();
+
+
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlerClass.LogError(ex);
+            }
+            return objList;
+        }
+
+        #endregion
 
 
         #region List Quotation Status
@@ -472,6 +506,6 @@ namespace ACRF_WebAPI.ViewModel
 
         #endregion
 
-
+        
     }
 }
