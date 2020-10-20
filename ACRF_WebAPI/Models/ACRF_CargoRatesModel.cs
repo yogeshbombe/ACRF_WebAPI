@@ -10,121 +10,123 @@ namespace ACRF_WebAPI.Models
     {
         [Key]
         public int Id { get; set; }
+        //[Key]
+        public int Project_Id { get; set; }
 
         
-        [Required(ErrorMessage="Airline can't be blank!")]
-        public int AirlineId { get; set; }
+        //[Required(ErrorMessage="Project can't be blank!")]
+        public string ProjectName { get; set; }
         
         
-        [Required(ErrorMessage="TariffMode Can't be blank!")]
-        public int TariffModeId { get; set; }
+        [Required(ErrorMessage="TrackerType Can't be blank!")]
+        public string TrackerType { get; set; }
 
 
-        [Required(ErrorMessage = "Origin Country Can't be blank!")]
-        [MaxLength(10)]
-        public string OCountryCode { get; set; }
+        //[Required(ErrorMessage = "Origin Country Can't be blank!")]
+        //[MaxLength(10)]
+        public string TrackerURL { get; set; }
 
-        
-        [Required(ErrorMessage="Origin City can't be blank!")]
-        [MaxLength(10)]
-        public string OCityCode { get; set; }
+        public string TrackerToken { get; set; }
+        //[Required(ErrorMessage="Origin City can't be blank!")]
+        //[MaxLength(10)]
+        public string TrackerUserName { get; set; }
 
         
         [MaxLength(100)]
-        public string OAirportName { get; set; }
+        public string TrackerPassword { get; set; }
 
 
 
 
-        [Required(ErrorMessage = "Destination Country Can't be blank!")]
-        [MaxLength(10)]
-        public string DCountryCode { get; set; }
+        //[Required(ErrorMessage = "Destination Country Can't be blank!")]
+        //[MaxLength(10)]
+        public string assignInTracker { get; set; }
 
 
-        [Required(ErrorMessage = "Destination City can't be blank!")]
-        [MaxLength(10)]
-        public string DCityCode { get; set; }
+        //[Required(ErrorMessage = "Destination City can't be blank!")]
+        //[MaxLength(10)]
+        //public string DCityCode { get; set; }
 
 
-        [MaxLength(100)]
-        public string DAirportName { get; set; }
+        //[MaxLength(100)]
+        //public string DAirportName { get; set; }
 
 
 
 
         
-        public decimal MinPrice { get; set; }
+        //public decimal MinPrice { get; set; }
 
-        public decimal MinWeight { get; set; }
+        //public decimal MinWeight { get; set; }
 
-        public decimal Normal { get; set; }
+        //public decimal Normal { get; set; }
 
-        public decimal plus45 { get; set; }
+        //public decimal plus45 { get; set; }
 
-        public decimal plus100 { get; set; }
+        //public decimal plus100 { get; set; }
 
-        public decimal plus250 { get; set; }
+        //public decimal plus250 { get; set; }
 
-        public decimal plus300 { get; set; }
+        //public decimal plus300 { get; set; }
 
-        public decimal plus500 { get; set; }
+        //public decimal plus500 { get; set; }
 
-        public decimal plus1000 { get; set; }
+        //public decimal plus1000 { get; set; }
 
-        public decimal FSCMin { get; set; }
+        //public decimal FSCMin { get; set; }
 
-        public decimal FSCKg { get; set; }
+        //public decimal FSCKg { get; set; }
 
-        public decimal WSCMin { get; set; }
+        //public decimal WSCMin { get; set; }
 
-        public decimal WSCKg { get; set; }
+        //public decimal WSCKg { get; set; }
 
-        public decimal XrayMin { get; set; }
+        //public decimal XrayMin { get; set; }
 
-        public decimal XrayKg { get; set; }
+        //public decimal XrayKg { get; set; }
 
-        public decimal MccMin { get; set; }
+        //public decimal MccMin { get; set; }
 
-        public decimal MccKg { get; set; }
+        //public decimal MccKg { get; set; }
 
-        public decimal CtcMin { get; set; }
+        //public decimal CtcMin { get; set; }
 
-        public decimal CtcKg { get; set; }
+        //public decimal CtcKg { get; set; }
 
-        public decimal Oth1 { get; set; }
+        //public decimal Oth1 { get; set; }
 
-        public decimal Oth2 { get; set; }
+        //public decimal Oth2 { get; set; }
 
-        public decimal Dgr { get; set; }
+        //public decimal Dgr { get; set; }
 
-        public decimal GrossWeight { get; set; }
+        //public decimal GrossWeight { get; set; }
 
-        public decimal TotalCost { get; set; }
-
-
-
-        [MaxLength(50)]
-        public string CreatedBy { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        [MaxLength(50)]
-        public string UpdatedBy { get; set; }
-
-        public DateTime UpdatedOn { get; set; }
+        //public decimal TotalCost { get; set; }
 
 
 
-        public string DCity { get; set; }
-        public string DCountry { get; set; }
-        public string OCity { get; set; }
-        public string OCountry { get; set; }
-        public string TariffMode { get; set; }
-        public string Airline { get; set; }
+        //[MaxLength(50)]
+        //public string CreatedBy { get; set; }
 
-        public string AirlinePhoto { get; set; }
+        //public DateTime CreatedOn { get; set; }
 
-        public string AirlineDemoPhoto { get; set; }
+        //[MaxLength(50)]
+        //public string UpdatedBy { get; set; }
+
+        //public DateTime UpdatedOn { get; set; }
+
+
+
+        //public string DCity { get; set; }
+        //public string DCountry { get; set; }
+        //public string OCity { get; set; }
+        //public string OCountry { get; set; }
+        //public string TariffMode { get; set; }
+        //public string Airline { get; set; }
+
+        //public string AirlinePhoto { get; set; }
+
+        //public string AirlineDemoPhoto { get; set; }
         
     }
 
@@ -133,7 +135,7 @@ namespace ACRF_WebAPI.Models
 
     public class Paged_ACRF_CargoRatesModel
     {
-        public List<ACRF_CargoRatesModel> ACRF_CargoRatesModelList { get; set; }
+        public List<ACRF_CargoRatesModel> data { get; set; }
 
         public int PageCount { get; set; }
     }
@@ -228,27 +230,27 @@ namespace ACRF_WebAPI.Models
 
 
 
-    public class CargoRatesForMulitSelectModel
-    {
-        public string Origin { get; set; }
+    //public class CargoRatesForMulitSelectModel
+    //{
+    //    public string Origin { get; set; }
 
-        public int TariffMode { get; set; }
+    //    public int TariffMode { get; set; }
 
-        public int GWeight { get; set; }
+    //    public int GWeight { get; set; }
 
-        public int VendorId { get; set; }
+    //    public int VendorId { get; set; }
 
-        public string destination { get; set; }
+    //    public string destination { get; set; }
 
-        //public List<ACRF_DestinationSearchModel> objDestList { get; set; }
+    //    //public List<ACRF_DestinationSearchModel> objDestList { get; set; }
 
-        //public List<ACRF_AirlinesSearchModel> objAirlinesList { get; set; }
+    //    //public List<ACRF_AirlinesSearchModel> objAirlinesList { get; set; }
 
-        public string[] objDestList { get; set; }
+    //    public string[] objDestList { get; set; }
 
-        public string[] objAirlinesList { get; set; }
+    //    public string[] objAirlinesList { get; set; }
 
         
-    }
+    //}
 
 }

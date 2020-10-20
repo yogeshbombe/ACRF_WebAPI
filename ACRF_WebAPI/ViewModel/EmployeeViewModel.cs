@@ -225,7 +225,7 @@ namespace ACRF_WebAPI.ViewModel
                     objList.ProjectID = Convert.ToInt32(sdr["ProjectID"]);
                     objList.Status = Convert.ToInt32(sdr["Status"]);
                     objList.StatusName = sdr["StatusName"].ToString();
-                    objList.Password = (sdr["Password"].ToString());
+                    objList.Password = EnCryptDecrypt.Encryption.decrypt(sdr["Password"].ToString());
                     objList.ProfilelName = (sdr["ProfileName"].ToString());
                     objList.ProjectName = sdr["ProjectName"].ToString();
                     objList.Expertise = sdr["Experties"].ToString().Split(',').Select(x => int.Parse(x)).ToArray();

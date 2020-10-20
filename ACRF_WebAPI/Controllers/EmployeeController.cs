@@ -3,10 +3,7 @@ using ACRF_WebAPI.Global;
 using ACRF_WebAPI.Models;
 using ACRF_WebAPI.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace ACRF_WebAPI.Controllers
@@ -48,7 +45,7 @@ namespace ACRF_WebAPI.Controllers
             {
                 try
                 {
-                   // objModel.CreatedBy = "10002";//GlobalFunction.getLoggedInUser(Request.Headers.GetValues("Token").First());
+                    // objModel.CreatedBy = "10002";//GlobalFunction.getLoggedInUser(Request.Headers.GetValues("Token").First());
                     result = objEmployeeVM.CreateEmployee(objModel);
                 }
                 catch (Exception ex)
@@ -71,7 +68,7 @@ namespace ACRF_WebAPI.Controllers
 
         [Route("api/Employee/ViewOneEmployee")]
         [HttpGet]
-        [SessionAuthorizeFilter(UserType.AdminUser)]
+       // [SessionAuthorizeFilter(UserType.AdminUser)]
         public IHttpActionResult ViewOneEmployee(int Id)
         {
             Employee objList = new Employee();
@@ -93,7 +90,7 @@ namespace ACRF_WebAPI.Controllers
 
         [Route("api/Employee/UpdateEmployee")]
         [HttpPut]
-        [SessionAuthorizeFilter(UserType.AdminUser)]
+        //[SessionAuthorizeFilter(UserType.AdminUser)]
         public IHttpActionResult UpdateEmployee(Employee objModel)
         {
             string result = "";
@@ -124,7 +121,7 @@ namespace ACRF_WebAPI.Controllers
 
         [Route("api/Employee/DeleteEmployee")]
         [HttpDelete]
-        [SessionAuthorizeFilter(UserType.AdminUser)]
+        //[SessionAuthorizeFilter(UserType.AdminUser)]
         public IHttpActionResult DeleteEmployee(int id)
         {
             string result = "";
