@@ -395,5 +395,27 @@ namespace ACRF_WebAPI.Controllers
         }
 
         #endregion
+
+        #region api/DropDown/DeveloperList (Get)
+
+        [Route("api/DropDown/DeveloperList")]
+        [HttpGet]
+        [SessionAuthorizeFilter]
+        public IHttpActionResult DeveloperList()
+        {
+            List<SelectListItem> objList = new List<SelectListItem>();
+            try
+            {
+                objList = objDDVM.ListManager();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlerClass.LogError(ex);
+            }
+
+            return Ok(new { results = objList });
+        }
+
+        #endregion
     }
 }

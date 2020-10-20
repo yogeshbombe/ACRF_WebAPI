@@ -468,6 +468,42 @@ namespace ACRF_WebAPI.ViewModel
 
         #endregion
 
+        #region List Developer
+
+        public List<SelectListItem> ListDeveloper()
+        {
+            List<SelectListItem> objList = new List<SelectListItem>();
+            try
+            {
+                string sqlstr = "GetDevelopers";
+
+                var connection = gConnection.Connection();
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(sqlstr, connection);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                while (sdr.Read())
+                {
+                    SelectListItem tempobj = new SelectListItem();
+                    tempobj.Text = sdr["Name"].ToString();
+                    tempobj.Value = sdr["EmpID"].ToString();
+                    objList.Add(tempobj);
+                }
+                sdr.Close();
+
+
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlerClass.LogError(ex);
+            }
+            return objList;
+        }
+
+        #endregion
+
 
         #region List Quotation Status
 
